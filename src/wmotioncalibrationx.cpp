@@ -145,7 +145,7 @@ void WMotionCalibrationX::CreateControls()
     wxStaticBitmap* itemStaticBitmap3 = new wxStaticBitmap( itemDialog1, wxID_STATIC, itemDialog1->GetBitmapResource(wxT("icons/usermoveh64.xpm")), wxDefaultPosition, wxSize(64, 64), 0 );
     itemBoxSizer2->Add(itemStaticBitmap3, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
 
-    m_staticText = new wxStaticText( itemDialog1, wxID_STATIC, _("Move your head left and right."), wxDefaultPosition, wxDefaultSize, 0 );
+    m_staticText = new wxStaticText( itemDialog1, wxID_STATIC, _("Move your head left and right, slowly but as far as you can\n without moving your whole body."), wxDefaultPosition, wxDefaultSize, 0 );
     itemBoxSizer2->Add(m_staticText, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
 
     m_staticTextFaceNotDetected = new wxStaticText( itemDialog1, wxID_STATIC, _("Your face is not detected. This may produce wrong calibration results."), wxDefaultPosition, wxDefaultSize, 0 );
