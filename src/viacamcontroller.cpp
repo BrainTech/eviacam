@@ -70,6 +70,8 @@ CViacamController::CViacamController(void)
 , m_runWizardAtStartup(false)
 , m_newTrackerDialogAtStartup(true)
 , m_checkUpdatesAtStartup(true)
+, m_hideGUI(true)
+, m_calibrationInsteadOfWizard(false)
 {
 	m_locale= new wxLocale ();
 	m_configManager= new CConfigManager(this);	
@@ -81,7 +83,9 @@ void CViacamController::InitDefaults()
 {
 	m_runWizardAtStartup= true;
 	m_languageId= wxLANGUAGE_DEFAULT;
-	m_enabledAtStartup= false;	
+	m_enabledAtStartup= false;
+	m_hideGUI = true;
+	m_calibrationInsteadOfWizard = false;
 #if defined(__WXMSW__)
 	m_onScreenKeyboardCommand= _T("osk.exe");
 #endif
@@ -231,7 +235,6 @@ bool CViacamController::Initialize ()
 	if (retval) {
 		m_pMainWindow = new WViacam( NULL, ID_WVIACAM );
 		assert (m_pMainWindow);
-		m_pMainWindow->Show (true);	
 	}
 
 	// Create hotkey manager
@@ -265,6 +268,9 @@ bool CViacamController::Initialize ()
 
 	// Load configuration
 	if (retval) m_configManager->ReadAll ();
+
+	// Display main window
+	if (retval && !m_hideGUI) m_pMainWindow->Show (true);
 	
 	// Enable pointeraction object
 	if (retval && m_enabledAtStartup) SetEnabled(true);
@@ -284,9 +290,20 @@ bool CViacamController::Initialize ()
 	}
 
 	// Run the wizard at startup
-	if (retval && m_runWizardAtStartup)
-		StartWizard();
-	
+	if (retval && m_runWizardAtStartup) {
+		if (m_calibrationInsteadOfWizard) {
+			StartMotionCalibration();
+			if (m_hideGUI) {
+				m_runWizardAtStartup = false;
+			}
+			m_configManager->WriteAll();
+		}
+		else StartWizard();
+	}
+
+	// Ensure that program in no-GUI mode is not stuck being not enabled
+	if (retval && m_hideGUI && !m_enabled) SetEnabled(true);
+
 	return retval;
 }
 
@@ -341,6 +358,8 @@ void CViacamController::WriteAppData(wxConfigBase* pConfObj)
 	pConfObj->Write(_T("cameraName"), m_cameraName);
 	pConfObj->Write(_T("newTrackerDialogAtStartup"), m_newTrackerDialogAtStartup);
 	pConfObj->Write(_T("checkUpdatesAtStartup"), m_checkUpdatesAtStartup);
+	pConfObj->Write(_T("hideGUI"), m_hideGUI);
+	pConfObj->Write(_T("calibrationInsteadOfWizard"), m_calibrationInsteadOfWizard);
 }
 
 void CViacamController::WriteProfileData(wxConfigBase* pConfObj)
@@ -362,6 +381,8 @@ void CViacamController::ReadAppData(wxConfigBase* pConfObj)
 	pConfObj->Read(_T("cameraName"), &m_cameraName);
 	pConfObj->Read(_T("newTrackerDialogAtStartup"), &m_newTrackerDialogAtStartup);
 	pConfObj->Read(_T("checkUpdatesAtStartup"), &m_checkUpdatesAtStartup);
+	pConfObj->Read(_T("hideGUI"), &m_hideGUI);
+	pConfObj->Read(_T("calibrationInsteadOfWizard"), &m_calibrationInsteadOfWizard);
 }
 
 void CViacamController::ReadProfileData(wxConfigBase* pConfObj)

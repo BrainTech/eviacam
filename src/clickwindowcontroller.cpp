@@ -102,6 +102,9 @@ void CClickWindowController::Finalize ()
 
 void CClickWindowController::Show(bool show) 
 {
+	// Check if GUI, including the click window, is enabled
+	if (m_pViacamController->GetHideGUI()) return;
+
 	if (show!= m_pWindow->IsShown())
 	{
 	/*

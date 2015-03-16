@@ -66,9 +66,15 @@ public:
 	
 	const bool GetRunWizardAtStartup () const {	return m_runWizardAtStartup; }
 	void SetRunWizardAtStartup (bool value) { m_runWizardAtStartup= value; }
+
+	const bool GetCalibrationInsteadOfWizard () const { return m_calibrationInsteadOfWizard; }
+	void SetCalibrationInsteadOfWizard (bool value) { m_calibrationInsteadOfWizard = value; }
 		
 	const bool GetCheckUpdatesAtStartup() const { return m_checkUpdatesAtStartup; }
 	void SetCheckUpdatesAtStartup(bool value) { m_checkUpdatesAtStartup = value; }
+
+	const bool GetHideGUI() const { return m_hideGUI; }
+	void SetHideGUI(bool value) { m_hideGUI = value; }
 
 	void SetLanguage (const int id);
 	const int GetLanguage () const { return m_languageId; }
@@ -136,7 +142,7 @@ public:
 	virtual void ProcessImage (IplImage *pImage);
 private:
 	void ReleaseResources();
-	void SetUpLanguage();		
+	void SetUpLanguage();
 	CCamera* SetUpCamera();
 
 	/*
@@ -193,6 +199,8 @@ private:
 	bool m_runWizardAtStartup;
 	bool m_newTrackerDialogAtStartup;
 	bool m_checkUpdatesAtStartup;
+	bool m_hideGUI;
+	bool m_calibrationInsteadOfWizard;
 
 };
 
