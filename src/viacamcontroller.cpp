@@ -41,6 +41,7 @@
 #include <wx/choicdlg.h>
 #include <wx/filename.h>
 
+
 using namespace eviacam;
 
 CViacamController::CViacamController(void)
@@ -304,6 +305,8 @@ bool CViacamController::Initialize ()
 	// Ensure that program in no-GUI mode is not stuck being not enabled
 	if (retval && m_hideGUI && !m_enabled) SetEnabled(true);
 
+	SendInfo("Eviacam is ready to go.");
+
 	return retval;
 }
 
@@ -350,6 +353,13 @@ void CViacamController::Finalize ()
 	}
 }
 
+void CViacamController::SendInfo(const char* message)
+{
+	slog_priority_t slogPriority = slog_get_priority();
+	slog_set_priority(SLOG_PRIO_INFO);
+	slog_write (SLOG_PRIO_INFO, message);
+	slog_set_priority(slogPriority);
+}
 
 void CViacamController::WriteAppData(wxConfigBase* pConfObj)
 {

@@ -76,6 +76,8 @@ public:
 	const bool GetHideGUI() const { return m_hideGUI; }
 	void SetHideGUI(bool value) { m_hideGUI = value; }
 
+	void SendInfo(const char* message);
+
 	void SetLanguage (const int id);
 	const int GetLanguage () const { return m_languageId; }
 
