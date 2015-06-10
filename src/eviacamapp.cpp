@@ -222,7 +222,7 @@ bool EViacamApp::OnCmdLineParsed(wxCmdLineParser& parser)
 	bool custom_config= parser.Found(wxT("c"));
 
 	if (custom_config) {
-		wxString path("~/.pisak/eviacam");
+		wxString path(wxT("~/.pisak/eviacam"));
 		wxFileConfig* pisakFileConfig = new wxFileConfig(wxEmptyString, wxEmptyString, path, path, wxCONFIG_USE_LOCAL_FILE);
 		wxConfigBase::Set(pisakFileConfig);
 	}
